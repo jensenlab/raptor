@@ -27,6 +27,7 @@ flux_variability <- function(model, obj_frac=0.999, return_fluxes=FALSE) {
   }
   vars <- model$get_names()$VarName
   for (i in 1:n) {
+    print(i)
     clear_objective(model)
     model$setattr("Obj", setNames(1, vars[[i]]))
     model$set_model_sense(maximize=TRUE)
@@ -36,6 +37,10 @@ flux_variability <- function(model, obj_frac=0.999, return_fluxes=FALSE) {
     if (return_fluxes) {
       fluxes[i, ] <- sol$X
     }
+  }
+  for (i in 1:n) {
+    clear_objective(model)
+    model$setattr("Obj", setNames(1, vars[[i]]))
     model$set_model_sense(minimize=TRUE)
     model$optimize()
     sol <- model$get_solution()
